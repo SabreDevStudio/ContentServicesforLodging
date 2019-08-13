@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="1d2e9e86-7f85-4a90-ad73-3b029fb9b166" activeEnvironment="Default" name="CSL-E2E-SOAPUI-Collection" resourceRoot="" soapui-version="5.4.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="7cbce198-0794-4d82-b56c-acb94f2a18f1" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://webservices.havail.sabre.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://webservices.havail.sabre.com</con:endpoint></con:endpoints><con:resource name="Router" path="/router" id="58146bed-8828-4af8-9c5a-e37aa67c962a"><con:settings/><con:parameters/><con:method name="Router" id="917eeb5c-4075-4ea5-b3f6-4d098751e1c2" method="POST"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/xml;charset=utf-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">soapenv:Envelope</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/><con:element xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">soapenv:Envelope</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>text/xml</con:mediaType><con:params/><con:element xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">soapenv:Envelope</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml;charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">soapenv:Envelope</con:element></con:representation></con:method></con:resource></con:interface><con:testSuite id="01e8323d-8153-4a17-8cc6-35b0321695d0" name="Orchestrated_APIs"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="f4ed2450-3c2a-43f7-a4ea-c0cec3d90d26" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="SessionCreate" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="SessionCreate" id="98c15a56-3d5e-4508-a41d-00657d568e8d"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="73d4ea55-8fdf-4f0a-98c4-b41cfc5dba75" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/1999/XMLSchema">
+  <SOAP-ENV:Header>
+    <eb:MessageHeader SOAP-ENV:mustUnderstand="1" eb:version="1.0">
+      <eb:ConversationId>nghp@sabre.com</eb:ConversationId>
+      <eb:From>
+        <eb:PartyId type="urn:x12.org:IO5:01">sabre.com</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId type="urn:x12.org:IO5:01">webservices.sabre.com</eb:PartyId>
+      </eb:To>
+      <eb:CPAId>TM61</eb:CPAId>
+      <eb:Service eb:type="string">Session</eb:Service>
+      <eb:Action>SessionCreateRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>gaTo4gn7HT22Z5rHlhLXpb</eb:MessageId>
+        <eb:Timestamp>2004-05-12T13:23:00Z</eb:Timestamp>
+        <eb:TimeToLive>2004-05-12T13:23:00Z</eb:TimeToLive>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/12/utility">
+      <wsse:UsernameToken>
+        <wsse:Username>777</wsse:Username>
+        <wsse:Password>h0t3ls7</wsse:Password>
+        <Organization>TM61</Organization>
+        <Domain>AA</Domain>
+      </wsse:UsernameToken>
+    </wsse:Security>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <SessionCreateRQ>
+      <POS>
+        <Source PseudoCityCode="${#Project#PCC}"/>
+      </POS>
+    </SessionCreateRQ>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>]]></con:request><con:originalUri>https://webservices.havail.sabre.com/router</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="SessionCreateScript" id="39ec5ec3-82c5-4854-a361-f11d2942926f"><con:settings/><con:config><script>def tokenString = context.expand('${SessionCreate#Response#//wsse:Security[1]/wsse:BinarySecurityToken[1]/text()}')
+
+def tokenBase64 = tokenString.bytes.encodeBase64().toString()
+
+testRunner.testCase.testSuite.project.setPropertyValue( "tokenBase64", tokenBase64 )
+testRunner.testCase.testSuite.project.setPropertyValue( "tokenString", tokenString )
+log.info("---> " + tokenString)
+log.info("---> " + tokenBase64)
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="SetDates" id="f292bee1-29d5-44c4-a841-96c9e197c99a"><con:settings/><con:config><script>String startDate =(new Date() + 10).format("yyyy-MM-dd").toUpperCase()
+log.info(startDate)
+
+String endDate =(new Date() + 12).format("yyyy-MM-dd").toUpperCase()
+log.info(endDate)
+
+testRunner.testCase.testSuite.setPropertyValue( "startDate", startDate)
+testRunner.testCase.testSuite.setPropertyValue( "endDate", endDate)</script></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="b51f47fd-71d2-48ec-bccd-4416922d92ad" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetHotelAvail V2.1.0" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="GetHotelAvailV2 .1(Airport)" id="7356cbc1-b78a-49a8-a61b-e989ce52a6d4"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(Airport)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SOAP-ENV:Header>
+	<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+		<eb:From>
+			<eb:PartyId>1900</eb:PartyId>
+		</eb:From>
+		<eb:To>
+			<eb:PartyId>webservices.sabre.com</eb:PartyId>
+		</eb:To>
+		<eb:CPAId>TM61</eb:CPAId>
+		<eb:ConversationId>1234567890</eb:ConversationId>
+		<eb:Action>GetHotelAvailRQ</eb:Action>
+		<eb:MessageData>
+			<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+			<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+			<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+		</eb:MessageData>
+		<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+	</eb:MessageHeader>
+	<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+		<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+	</wsse:Security>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+	<GetHotelAvailRQ version="2.1.0" xmlns="http://services.sabre.com/hotel/avail/v2_1_0">
+		<SearchCriteria OffSet="2" SortBy="TotalRate" SortOrder="ASC" PageSize="200" TierLabels="true">
+			<GeoSearch>
+				<GeoRef Radius="200" UOM="MI">
+					<RefPoint Value="ORD" ValueContext="CODE" RefPointType="6"/>
+				</GeoRef>
+			</GeoSearch>
+			<RateInfoRef CurrencyCode="USD" BestOnly="1"><!-- PrepaidQualifier="IncludePrepaid" -->
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<!--<RateRange Min="100.0" Max="1000.0"/>-->
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+						<!--	<ChildAges>1,2</ChildAges>-->
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+			<HotelPref>
+     			</HotelPref>
+				<ImageRef Type="MEDIUM" LanguageCode="EN"/>
+			</SearchCriteria>
+		</GetHotelAvailRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="e6604af6-eb5c-42b9-a724-d9904f67ac56" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GetHotelAvailV2 .1(Address)" id="d83b765f-c093-4be6-b5cd-241b51ef24c4"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(Address)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SOAP-ENV:Header>
+	<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+		<eb:From>
+			<eb:PartyId>1900</eb:PartyId>
+		</eb:From>
+		<eb:To>
+			<eb:PartyId>webservices.sabre.com</eb:PartyId>
+		</eb:To>
+		<eb:CPAId>TM61</eb:CPAId>
+		<eb:ConversationId>1234567890</eb:ConversationId>
+		<eb:Action>GetHotelAvailRQ</eb:Action>
+		<eb:MessageData>
+			<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+			<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+			<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+		</eb:MessageData>
+		<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+	</eb:MessageHeader>
+	<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+		<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+	</wsse:Security>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+	<GetHotelAvailRQ version="2.1.0" xmlns="http://services.sabre.com/hotel/avail/v2_1_0">
+		<SearchCriteria OffSet="2" SortBy="TotalRate" SortOrder="ASC" PageSize="200" TierLabels="true">
+				<GeoSearch>
+					<GeoRef Radius="100" UOM="MI">
+						<AddressRef Street="Hidden Ridge" City="irving" PostalCode="75038" County="Dallas" StateProv="TX" CountryCode="US"/>
+					</GeoRef>
+				</GeoSearch>
+			<RateInfoRef CurrencyCode="USD" BestOnly="1"><!-- PrepaidQualifier="IncludePrepaid" -->
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<!--<RateRange Min="100.0" Max="1000.0"/>-->
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+						<!--	<ChildAges>1,2</ChildAges>-->
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+				<HotelPref>
+					<ChainCodes>
+						<ChainCode>YX</ChainCode>
+						<ChainCode>MC</ChainCode>
+						<ChainCode>CY</ChainCode>
+						<ChainCode>FN</ChainCode>
+						<ChainCode>ES</ChainCode>
+						<ChainCode>SI</ChainCode>
+    				</ChainCodes>
+					<SabreRating Min="1.0" Max="5.0"/>
+				</HotelPref>
+				<ImageRef Type="MEDIUM" LanguageCode="EN"/>
+			</SearchCriteria>
+		</GetHotelAvailRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="6e7ed68d-6d5f-481f-844e-3b6f09b7127f" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GetHotelAvailV2 .1(City)" id="1a6d6575-8d74-4276-b8f6-3e42bdb9530e"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(City)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SOAP-ENV:Header>
+	<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+		<eb:From>
+			<eb:PartyId>1900</eb:PartyId>
+		</eb:From>
+		<eb:To>
+			<eb:PartyId>webservices.sabre.com</eb:PartyId>
+		</eb:To>
+		<eb:CPAId>TM61</eb:CPAId>
+		<eb:ConversationId>1234567890</eb:ConversationId>
+		<eb:Action>GetHotelAvailRQ</eb:Action>
+		<eb:MessageData>
+			<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+			<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+			<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+		</eb:MessageData>
+		<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+	</eb:MessageHeader>
+	<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+		<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+	</wsse:Security>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+	<GetHotelAvailRQ version="2.1.0" xmlns="http://services.sabre.com/hotel/avail/v2_1_0">
+		<SearchCriteria OffSet="2" SortBy="TotalRate" SortOrder="ASC" PageSize="200" TierLabels="true">
+				<GeoSearch>
+					<GeoRef Radius="100" UOM="MI">
+						<RefPoint Value="Irving" ValueContext="NAME" RefPointType="5" CountryCode="US"/>
+					</GeoRef>
+				</GeoSearch>
+			<RateInfoRef CurrencyCode="USD" BestOnly="1"><!-- PrepaidQualifier="IncludePrepaid" -->
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<!--<RateRange Min="100.0" Max="1000.0"/>-->
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+						<!--	<ChildAges>1,2</ChildAges>-->
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+			<HotelPref>
+     			</HotelPref>
+				<ImageRef Type="MEDIUM" LanguageCode="EN"/>
+			</SearchCriteria>
+		</GetHotelAvailRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GetHotelAvailV2 .1(Lat/Long)" id="13ead2f2-1891-4c3b-b173-2d612f3d39b8"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(Lat/Long)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SOAP-ENV:Header>
+	<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+		<eb:From>
+			<eb:PartyId>1900</eb:PartyId>
+		</eb:From>
+		<eb:To>
+			<eb:PartyId>webservices.sabre.com</eb:PartyId>
+		</eb:To>
+		<eb:CPAId>TM61</eb:CPAId>
+		<eb:ConversationId>1234567890</eb:ConversationId>
+		<eb:Action>GetHotelAvailRQ</eb:Action>
+		<eb:MessageData>
+			<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+			<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+			<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+		</eb:MessageData>
+		<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+	</eb:MessageHeader>
+	<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+		<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+	</wsse:Security>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+	<GetHotelAvailRQ version="2.1.0" xmlns="http://services.sabre.com/hotel/avail/v2_1_0">
+		<SearchCriteria OffSet="2" SortBy="TotalRate" SortOrder="ASC" PageSize="200" TierLabels="true">
+				<GeoSearch>
+					<GeoRef Radius="100" UOM="MI">
+						<GeoCode Latitude="29.462404" Longitude="-98.621791"/>
+					</GeoRef>
+				</GeoSearch>
+			<RateInfoRef CurrencyCode="USD" BestOnly="1"><!-- PrepaidQualifier="IncludePrepaid" -->
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<!--<RateRange Min="100.0" Max="1000.0"/>-->
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+						<!--	<ChildAges>1,2</ChildAges>-->
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+			<HotelPref>
+     			</HotelPref>
+				<ImageRef Type="MEDIUM" LanguageCode="EN"/>
+			</SearchCriteria>
+		</GetHotelAvailRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GetHotelAvailV2 .1(Polygon)" id="c70877cf-6698-4482-8acd-808fa691ac92"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(Polygon)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SOAP-ENV:Header>
+	<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+		<eb:From>
+			<eb:PartyId>1900</eb:PartyId>
+		</eb:From>
+		<eb:To>
+			<eb:PartyId>webservices.sabre.com</eb:PartyId>
+		</eb:To>
+		<eb:CPAId>TM61</eb:CPAId>
+		<eb:ConversationId>1234567890</eb:ConversationId>
+		<eb:Action>GetHotelAvailRQ</eb:Action>
+		<eb:MessageData>
+			<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+			<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+			<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+		</eb:MessageData>
+		<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+	</eb:MessageHeader>
+	<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+		<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+	</wsse:Security>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+	<GetHotelAvailRQ version="2.1.0" xmlns="http://services.sabre.com/hotel/avail/v2_1_0">
+		<SearchCriteria OffSet="2" SortBy="TotalRate" SortOrder="ASC" PageSize="200" TierLabels="true">
+					<GeoSearch>
+					<GeoRef Radius="100" UOM="MI">
+						<RefPoint Value="900010813" ValueContext="CODE" RefPointType="37"/>
+						
+					</GeoRef>
+				</GeoSearch>
+			<RateInfoRef CurrencyCode="USD" BestOnly="1"><!-- PrepaidQualifier="IncludePrepaid" -->
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<!--<RateRange Min="100.0" Max="1000.0"/>-->
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+						<!--	<ChildAges>1,2</ChildAges>-->
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+			<HotelPref>
+     			</HotelPref>
+				<ImageRef Type="MEDIUM" LanguageCode="EN"/>
+			</SearchCriteria>
+		</GetHotelAvailRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="f39ca8ef-96fd-476d-a1cb-cf9e2e537362" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetHotelDetails V1.1" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="GetHotelDetailsRQ" id="c8e42223-66ca-419a-b829-b333e220c62d"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelDetailsRQ" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:From>
+				<eb:PartyId>777</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId>webservices.sabre.com</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>TM61</eb:CPAId>
+			<eb:ConversationId>1234567890</eb:ConversationId>
+			<eb:Action>GetHotelDetailsRQ</eb:Action>
+			<eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-GetThere:01a86cdc9c</eb:CustomerAppId>
+			<eb:MessageData>
+				<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+				<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+				<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+					<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</soap:Header>
+	<soap:Body>
+		<GetHotelDetailsRQ xmlns="http://services.sabre.com/hotel/details/v1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xsi:schemaLocation="http://services.sabre.com/hotel/details/v1.1.0 GetHotelDetailsRQ.xsd">
+			<SearchCriteria>
+				<HotelRefs>
+					<HotelRef HotelCode="100424236" CodeContext="GLOBAL"/>
+				</HotelRefs>
+				<RateInfoRef CurrencyCode="USD" PrepaidQualifier="IncludePrepaid">
+					<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+					<Rooms>
+						<Room Index="1" Adults="1" Children="0">
+						</Room>
+					</Rooms>
+					<InfoSource>100</InfoSource>
+				</RateInfoRef>
+				<HotelContentRef>
+					<DescriptiveInfoRef>
+						<PropertyInfo>true</PropertyInfo>
+						<LocationInfo>true</LocationInfo>
+						<Amenities>true</Amenities>
+						<Descriptions>
+							<Description Type="ShortDescription"/>
+							<Description Type="Alerts"/>
+							<Description Type="Dining"/>
+							<Description Type="Facilities"/>
+							<Description Type="Recreation"/>
+							<Description Type="Services"/>
+							<Description Type="Attractions"/>
+							<Description Type="CancellationPolicy"/>
+							<Description Type="DepositPolicy"/>
+							<Description Type="Directions"/>
+							<Description Type="Policies"/>
+							<Description Type="SafetyInfo"/>
+							<Description Type="TransportationInfo"/>
+						</Descriptions>
+						<AdditionalCharges>true</AdditionalCharges>
+						<PointOfInterests>true</PointOfInterests>
+						<Airports>true</Airports>
+						<AcceptedCreditCards>true</AcceptedCreditCards>
+						<GuaranteePolicies>true</GuaranteePolicies>
+					</DescriptiveInfoRef>
+					<MediaRef MaxItems="ALL">
+						<MediaTypes>
+							<Images>
+								<Image Type="MEDIUM"/>
+							</Images>
+							<PanoramicMedias>
+								<PanoramicMedia Type="HD360"/>
+							</PanoramicMedias>
+							<Videos>
+								<Video Type="VIDEO360"/>
+							</Videos>
+						</MediaTypes>
+						<AdditionalInfo>
+							<Info Type="CAPTION">true</Info>
+						</AdditionalInfo>
+						<Languages>
+							<Language Code="EN"/>
+						</Languages>
+					</MediaRef>
+				</HotelContentRef>
+			</SearchCriteria>
+		</GetHotelDetailsRQ>
+	</soap:Body>
+</soap:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Set-rateKey" id="41600646-6307-4279-bbd4-c91a72c21669"><con:settings/><con:config><script>	 import java.util.Date;
+	 import java.text.SimpleDateFormat;
+	 import groovy.util.XmlParser;
+	 import groovy.util.XmlSlurper;
+	 import groovy.xml.*;
+
+	
+	
+	def projectDir = context.expand('${projectDir}')
+	def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context ) ;
+
+
+
+//Hitting the Hotel Avail to generate a RateKey
+	testRunner.runTestStepByName("GetHotelDetailsRQ")	
+	def resultAsXml = context.expand('${GetHotelDetailsRQ#Response}')		
+
+//Remove name spaces from response					
+	resultAsXml = resultAsXml.replaceAll("(ns\\d*:|ns\\d*:)","")
+	resultAsXml = resultAsXml.replaceAll("soap-env:","")
+	resultAsXml = resultAsXml.replaceAll("stlh2:","")	
+// Fetch RateKey from Avail response
+	def finalResult = resultAsXml.substring(resultAsXml.indexOf("&lt;GetHotelDetailsRS"),resultAsXml.lastIndexOf("&lt;/Body>"))	
+	def leadRateXmlResp = new XmlParser().parseText(finalResult)
+	//log.info "leadRateXmlResp --> " + leadRateXmlResp.name()
+	//def rateKey = leadRateXmlResp.GetHotelDetailsRS.HotelDetailsInfo.HotelRateInfo[1]
+	def rateKey = leadRateXmlResp.HotelDetailsInfo.HotelRateInfo.RateInfos.RateInfo.@'RateKey'[0]	
+	
+	testRunner.testCase.testSuite.setPropertyValue("RateKey",rateKey)
+//log.info "Rate key --> " + rateKey
+	
+
+</script></con:config></con:testStep><con:properties><con:property><con:name>RateKey</con:name><con:value>fcDAN6f50rDi5YOeOWdAa7far3PXbqMaQXslclYs9MGSVLzrhJWl1dbI303hrQqQQUysMgag3KmYFbM8vN3SCzhBMHcNDeyyHHYuRDna3SMaYGlQ9q/HJg1ycbM6D74g2UHjTLRyVfxMsPh8s287UNPvlqN5ksxoQY9LG8nqqFGoZQJ9AhK95MTmf1h2W5iGJwP1BB0tzZqd1A9apz9F5fYydd0Zb099JavYBGjE5aIycs20STNGZtd/WZayVOv2qSZy9lZDsleLHNIP2EZCUe1J1QzdwAIKGXautNf0jug5XmvlXwof6y2yHLnp8FvBf6jIdEahoGemAn9k9w5jyALVCdYw71Sw24WSFOEwxvKX6CY6ohJKRtDQFAHx9m5wYxZLcDMtmukd4b5HqOj82w==</con:value></con:property></con:properties></con:testCase><con:testCase id="eb0af220-98b1-47ed-8f15-ff389db79501" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="HotelPriceCheck V2.1.0" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="HotelPriceCheckRQ" id="356f2888-9413-451f-80bb-0a35273b9e99"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="HotelPriceCheckRQ" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:From>
+				<eb:PartyId>777</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId>webservices.sabre.com</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>TM61</eb:CPAId>
+			<eb:ConversationId>1234567890</eb:ConversationId>
+   <eb:CustomerAppId xmlns:ns10="http://webservices.sabre.com/">SWS1:SBR-CtntSerLgUI:1f06045fcf</eb:CustomerAppId>
+			<eb:Action>HotelPriceCheckRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+				<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+				<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</soap:Header>
+	<soap:Body>
+		<HotelPriceCheckRQ xmlns="http://services.sabre.com/hotel/pricecheck/v2_1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1.0">
+			<RateInfoRef RateKey="${#TestSuite#RateKey}"/>
+		</HotelPriceCheckRQ>
+	</soap:Body>
+</soap:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="SetBookingKey" id="b20fd6dc-b3ce-4568-8572-dd569ae3e121"><con:settings/><con:config><script>	 import java.util.Date;
+	 import java.text.SimpleDateFormat;
+	 import groovy.util.XmlParser;
+	 import groovy.util.XmlSlurper;
+	 import groovy.xml.*;
+
+	
+	
+	def projectDir = context.expand('${projectDir}')
+	def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context ) ;
+
+
+
+//Hitting the Hotel Avail to generate a RateKey
+	testRunner.runTestStepByName("HotelPriceCheckRQ")	
+	def resultAsXml = context.expand('${HotelPriceCheckRQ#Response}')		
+
+//Remove name spaces from response					
+	resultAsXml = resultAsXml.replaceAll("(ns\\d*:|ns\\d*:)","")
+	resultAsXml = resultAsXml.replaceAll("soap-env:","")
+	resultAsXml = resultAsXml.replaceAll("stlh2:","")	
+// Fetch RateKey from Avail response
+	def finalResult = resultAsXml.substring(resultAsXml.indexOf("&lt;HotelPriceCheckRS"),resultAsXml.lastIndexOf("&lt;/Body>"))	
+	def priceCheckXmlResp = new XmlParser().parseText(finalResult)
+	//log.info "leadRateXmlResp --> " + leadRateXmlResp.name()
+	//def rateKey = leadRateXmlResp.GetHotelDetailsRS.HotelDetailsInfo.HotelRateInfo[1]
+	def bookingKey = priceCheckXmlResp.PriceCheckInfo.@'BookingKey'[0]
+//	log.info "booking Key --> " + bookingKey
+	testRunner.testCase.testSuite.project.setPropertyValue("BookingKey",bookingKey)
+	//log.info "Booking Key --> " + BookingKey
+	
+
+</script></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>startDate</con:name><con:value>2019-08-15</con:value></con:property><con:property><con:name>endDate</con:name><con:value>2019-08-17</con:value></con:property><con:property><con:name>RateKey</con:name><con:value>QsYZg4iWnPoaJuL+A527YxrmtUyWMt5JNlTYIQ2bWdeR14N2u88bS+3DJiDCCHKtQ1jpD/B0+LRHZwuBHWEbQ1uRllnPhXR8wP3bEFjUejdzzfrak7MrIR3hnAo0y2YUdtO2ij7rgOvWJSyKzg1bpdDzMP37kzw5IcEroJhfM6WhodS69DseHk6I/f9u6aWDj3qA84TzTd9CgO3mkRweEcP/4thtdIXPbdUnXE3DHZuu1RDdpN0I1gi4AD3MyvJ5VznekAPy2Zsu++QkrHNdKjoCfVv2QwzRkRdlXBsPoT1C2L9JVmORHjwyGhQdC+9TIFBtM/118qmS0p3V8PitR/pFSrCgz4t0kQXxYEfgvPsgwEAI2NslJvXnKeGICZK4KmiAHB8o5SIjNhs4uYqlvA==</con:value></con:property></con:properties></con:testSuite><con:testSuite id="30db2111-8633-4ab9-b201-88252943ca29" name="Granular_APIs"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="7e6e3b96-e89c-4d97-81ea-35cc3282f63e" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetHotelListRQ" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="GetHotelListV2.0" id="872ca354-4732-482c-97b7-609551452807"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelListV2.0" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SOAP-ENV:Header>
+		<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:From>
+				<eb:PartyId>777</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId>webservices.sabre.com</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>TM61</eb:CPAId>
+			<eb:ConversationId>1234567890</eb:ConversationId>
+			<eb:Action>GetHotelListRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+				<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+				<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</SOAP-ENV:Header>
+	<SOAP-ENV:Body>
+		<GetHotelListRQ xmlns="http://services.sabre.com/hotel/list/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0">
+			<HotelRefs>
+			 <HotelRef HotelCode="100022450" CodeContext="GLOBAL"/>
+        <HotelRef HotelCode="100024800" CodeContext="GLOBAL"/>
+        <HotelRef HotelCode="100059220" CodeContext="GLOBAL"/>
+			</HotelRefs>
+			<HotelPref>
+				<!--
+				<BrandCodes>
+					<BrandCode>10022</BrandCode>
+					<BrandCode>10023</BrandCode>
+				</BrandCodes>
+				<ChainCodes>
+					<ChainCode>MC</ChainCode>
+					<ChainCode>HY</ChainCode>
+				</ChainCodes>
+				<AmenityCodes Inclusive="true">
+					<AmenityCode>15</AmenityCode>
+				</AmenityCodes>
+				<PropertyTypeCodes Inclusive="false">
+					<PropertyTypeCode>1</PropertyTypeCode>
+					<PropertyTypeCode>2</PropertyTypeCode>
+				</PropertyTypeCodes>
+				-->
+				<SabreRating Min="1.0" Max="5.0"/>
+			</HotelPref>
+			<HotelInfoRef>
+				<LocationInfo>true</LocationInfo>
+				<Amenities>true</Amenities>
+				<PropertyTypeInfo>true</PropertyTypeInfo>
+			</HotelInfoRef>
+		</GetHotelListRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="e6604af6-eb5c-42b9-a724-d9904f67ac56" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="d3e4e66c-e837-4acd-8a9c-7cddbc0b3cb6" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetHotelRateInfoRQ" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="GetHotelRateInfoRQ" id="d0cf2dd6-7999-4699-931c-f69123bed7bd"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelRateInfoRQ" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:From>
+				<eb:PartyId>777</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId>webservices.sabre.com</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>TM61</eb:CPAId>
+			<eb:ConversationId>1234567890</eb:ConversationId>
+			<eb:Action>GetHotelRateInfoRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+				<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+				<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</soap:Header>
+	<soap:Body>
+	    <GetHotelRateInfoRQ xmlns="http://services.sabre.com/hotel/rate/v2_1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1.0" xsi:schemaLocation="http://services.sabre.com/hotel/rate/v2_1_0 GetHotelRateInfoRQ_V2_1_0.xsd">
+			<HotelRefs>
+			    <HotelRef HotelCode="100052914" CodeContext="GLOBAL"/>
+			</HotelRefs>
+			<RateInfoRef CurrencyCode="USD">
+				<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<Rooms>
+					<Room Index="1" Adults="1" Children="0">
+					</Room>
+				</Rooms>
+				<InfoSource>100</InfoSource>
+			</RateInfoRef>
+		</GetHotelRateInfoRQ>
+	</soap:Body>
+</soap:Envelope>
+
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="899f174c-268c-4d6b-8fa4-ee463539ac48" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetHotelLeadRateRQ" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="GetHotelLeadRateRQ" id="95924d3b-599d-4dcf-9a5b-3f384c49239e"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelLeadRateRQ" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<eb:MessageHeader eb:version="" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:From>
+				<eb:PartyId>777</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId>webservices.sabre.com</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>TM61</eb:CPAId>
+			<eb:ConversationId>1234567890</eb:ConversationId>
+			<eb:Action>GetHotelLeadRateRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>LbQ26Jnofb4Q8f3Pk15Mg5</eb:MessageId>
+				<eb:Timestamp>2015-05-12T13:23:00Z</eb:Timestamp>
+				<eb:TimeToLive>2015-05-12T13:23:00Z</eb:TimeToLive>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken>${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</soap:Header>
+	<soap:Body>
+	  <GetHotelLeadRateRQ xmlns="http://services.sabre.com/hotel/leadrate/v2_1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1.0" xsi:schemaLocation="http://services.sabre.com/hotel/leadrate/v2_1_0 GetHotelLeadRateRQ_V2_1_0.xsd">
+			<HotelRefs>
+				<HotelRef HotelCode="100068702" CodeContext="GLOBAL"/>
+			</HotelRefs>
+			<RateInfoRef CurrencyCode="AUD" PrepaidQualifier="IncludePrepaid" BestOnly="1">
+					<StayDateRange StartDate="${#TestSuite#startDate}" EndDate="${#TestSuite#endDate}"/>
+				<RateRange Min="0.10" Max="5000.0"/>
+				<Rooms>
+					<Room Index="1" Adults="1" Children="1">
+						<ChildAges>1</ChildAges>
+					</Room>
+				</Rooms>
+				<InfoSource>100,110,111,112,113</InfoSource>
+			</RateInfoRef>
+		</GetHotelLeadRateRQ>
+	</soap:Body>
+</soap:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="7b533a40-fb07-4032-b18e-849a134ad90c" name="status=&quot;Complete&quot;"><con:configuration><token>status="Complete"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>tokenBase64</con:name><con:value>U2hhcmVkL0lETDpJY2VTZXNzXC9TZXNzTWdyOjFcLjAuSURML0NvbW1vbi8hSUNFU01TXC9SRVNBIUlDRVNNU0xCXC9SRVMuTEIhLTI5ODgzMzcxNDM4NzEwODk1MjUhMTUzNjg4OCEw</con:value></con:property><con:property><con:name>tokenString</con:name><con:value>Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESA!ICESMSLB\/RES.LB!-2988337143871089525!1536888!0</con:value></con:property><con:property><con:name>startDate</con:name><con:value>2019-08-15</con:value></con:property><con:property><con:name>endDate</con:name><con:value>2019-08-17</con:value></con:property><con:property><con:name>RateKey</con:name><con:value/></con:property><con:property><con:name>booking-key</con:name><con:value/></con:property></con:properties></con:testSuite><con:testSuite id="65149b2a-dae7-4fa6-8b15-4e0269d0c6b7" name="Booking_APIs"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4ac40daa-8569-4879-8f58-c9a6d0add2f3" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="UpdateReservationRQ" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="UpdateReservationRQ-Initiate" id="25825827-23c5-477b-9c56-655a57048c01"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GetHotelAvailV2 .1(Airport)" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SOAP-ENV:Header>
+		<eb:MessageHeader eb:id="" eb:version="1.0" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:ConversationId>test</eb:ConversationId>
+			<eb:From>
+				<eb:PartyId type="urn:x12.org:IO5:01">99999</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId type="urn:x12.org:IO5:01">123123</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>R917</eb:CPAId>
+			<eb:Service eb:type="Sabre">CDI Service</eb:Service>
+			<eb:Action>UpdateReservationRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>mid:1</eb:MessageId>
+				<eb:Timestamp>2008-03-03T12:45:52</eb:Timestamp>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</SOAP-ENV:Header>
+	<SOAP-ENV:Body>
+<pnrb:UpdateReservationRQ Version="1.19.0" xmlns:pnrb="http://webservices.sabre.com/pnrbuilder/v1_19" xmlns:or="http://services.sabre.com/res/or/v1_14">
+	<pnrb:RequestType initialIgnore="true" commitTransaction="false">Stateful</pnrb:RequestType>
+	<pnrb:ReturnOptions RetrievePNR="true"/>
+	<pnrb:ReservationUpdateList>
+		<pnrb:ReservationUpdateItem UpdateId="100">
+			<pnrb:PassengerNameUpdate op="C">
+				<pnrb:TravelerName>
+					<pnrb:Given>SABRE</pnrb:Given>
+					<pnrb:Surname>TEST</pnrb:Surname>
+				</pnrb:TravelerName>
+			</pnrb:PassengerNameUpdate>
+		</pnrb:ReservationUpdateItem>
+		<pnrb:ReservationUpdateItem UpdateId="200">
+			<pnrb:PhoneNumberUpdate op="C">
+				<pnrb:PhoneText>111111</pnrb:PhoneText>
+			</pnrb:PhoneNumberUpdate>
+		</pnrb:ReservationUpdateItem>
+			<pnrb:ReservationUpdateItem UpdateId="ID_2">
+			<pnrb:ProductUpdate op="C" id="1">
+				<pnrb:Product>
+					<or:ProductDetails>
+						<or:ProductName type="HHL">Lodging</or:ProductName>
+						<or:Lodging>
+							<or:ResGlobalInfo>
+								<or:BookingInfo RequestorID="SG11111" CorpDiscount="CD1234567" PromotionalCode="XJKGHLDE" Email="test@sabre.com">
+									<or:BookingKey>${#Project#BookingKey}</or:BookingKey>
+									<or:HotelReservationIds>
+										<or:HotelReservation Id="PNR12345" Type="24"/>
+									</or:HotelReservationIds>
+								</or:BookingInfo>
+								<or:HotelInfo HotelCode="hotelCode" HotelName="hotelName">
+									<or:LocationInfo>
+										<or:Contact Fax="+441614453941"/>
+									</or:LocationInfo>
+								</or:HotelInfo>
+								<or:StayDateRange StartDate="2019-04-10" EndDate="2019-04-15"/>
+								<or:Total AmountAfterTax="1000.00" CurrencyCode="USD"/>
+							</or:ResGlobalInfo>
+							<or:Rooms>
+								<or:Room NonSmoking="true" BedTypeCode="5" AccessibilityInformation="1" RoomIndex="1" SegmentNumber="1">
+									<or:Guests>
+										<or:Guest Title="Mr" FirstName="BOOKING" LastName="TEST" Email="test@sabre.com" Type="10" Age="30" Index="1" LeadGuest="true" FrequentFlyerNumber="FLY12345" LoyaltyId="LOY12345">
+											<or:Contact Phone="528444380000" Mobile="123456789"/>
+										</or:Guest>
+									</or:Guests>
+									<or:RoomDescription Name="roomDesc">
+										<or:Text>DOUBLE TWO QUEEN BEDS NON SMOKING</or:Text>
+									</or:RoomDescription>
+									<or:RoomExtras>
+										<or:RoomExtra Type="26" Quantity="1"/>
+									</or:RoomExtras>
+									<or:RatePlan RatePlanCode="123"/>
+									<or:SpecialInstructions>
+										<or:SpecialInstruction>RoadSide View Needed</or:SpecialInstruction>
+									</or:SpecialInstructions>
+								</or:Room>
+							</or:Rooms>
+							<or:SpecialInstructions>
+								<or:SpecialInstruction>Need a bunsen burner in the room.</or:SpecialInstruction>
+							</or:SpecialInstructions>
+							<or:PaymentInformation Type="DEPOSIT">
+								<or:FormOfPaymentReference newRef="500"/>
+							</or:PaymentInformation>
+							<or:POS>
+								<or:Source AgencyName="Travel" ISOCountryCode="US" PseudoCityCode="TM61">
+									<or:RequestorID Type="5" Id="12345678" IdContext="IATA"/>
+									<or:AgencyAddress>
+										<or:AddressLine1>Wadowicka 6</or:AddressLine1>
+										<or:AddressLine2>Entrance D</or:AddressLine2>
+										<or:CityName CityCode="KRK">Krakow</or:CityName>
+										<or:StateProv StateCode="MP">StateProv</or:StateProv>
+										<or:PostalCode>30-718</or:PostalCode>
+										<or:CountryName Code="PL">Poland</or:CountryName>
+									</or:AgencyAddress>
+									<or:AgencyContact Phone="1229500001" Mobile="599000303" Fax="1229500002"/>
+								</or:Source>
+							</or:POS>
+						</or:Lodging>
+					</or:ProductDetails>
+				</pnrb:Product>
+			</pnrb:ProductUpdate>
+		</pnrb:ReservationUpdateItem>
+		<pnrb:ReservationUpdateItem UpdateId="400">
+			<pnrb:TicketingInfoUpdate>
+				<pnrb:AlreadyTicketed>
+					<pnrb:Code>T-A</pnrb:Code>
+				</pnrb:AlreadyTicketed>
+			</pnrb:TicketingInfoUpdate>
+		</pnrb:ReservationUpdateItem>
+		<pnrb:ReservationUpdateItem UpdateId="500">
+			<pnrb:OpenReservationElementUpdate id="500" op="C">
+				<pnrb:OpenReservationElement id="500" type="FP">
+					<or:FormOfPayment>
+						<or:PaymentCard>
+						<or:PaymentType>CC</or:PaymentType>
+							<or:CardCode>VI</or:CardCode>
+							<or:CardNumber>4444333322221111</or:CardNumber>
+							<or:ExpiryMonth>--04</or:ExpiryMonth>
+							<or:ExpiryYear>2022</or:ExpiryYear>
+							<or:GenerateApprovalAtTicketing>true</or:GenerateApprovalAtTicketing>
+								<or:FullCardHolderName>
+								<or:FirstName>BOOKING</or:FirstName>
+								<or:LastName>TEST</or:LastName>
+							</or:FullCardHolderName>
+							<or:CSC>456</or:CSC>
+							<or:CSCValidatingCarrier>AA</or:CSCValidatingCarrier>
+							<or:Address>
+								<or:AddressLine>Bag End</or:AddressLine>
+								<or:CityName>The Shire</or:CityName>
+								<or:CountryCodes>
+									<or:Code>UK</or:Code>
+								</or:CountryCodes>
+							</or:Address>
+						</or:PaymentCard>
+					</or:FormOfPayment>
+				</pnrb:OpenReservationElement>
+			</pnrb:OpenReservationElementUpdate>
+		</pnrb:ReservationUpdateItem>
+				<pnrb:ReceivedFrom>
+			<pnrb:Name>BOOKING</pnrb:Name>
+		</pnrb:ReceivedFrom>
+	</pnrb:ReservationUpdateList>
+</pnrb:UpdateReservationRQ>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="e6604af6-eb5c-42b9-a724-d9904f67ac56" name="Success=OK"><con:configuration><token>Success>OK</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="UpdateReservationRQ-Commit" id="75de57e1-b441-4f93-93fe-d19a7f704e25"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="UpdateReservationRQ-Commit" id="acfaef3b-3f94-41c5-9b2a-dd3da876b1d0" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SOAP-ENV:Header>
+		<eb:MessageHeader eb:id="" eb:version="1.0" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+			<eb:ConversationId>test</eb:ConversationId>
+			<eb:From>
+				<eb:PartyId type="urn:x12.org:IO5:01">99999</eb:PartyId>
+			</eb:From>
+			<eb:To>
+				<eb:PartyId type="urn:x12.org:IO5:01">123123</eb:PartyId>
+			</eb:To>
+			<eb:CPAId>R917</eb:CPAId>
+			<eb:Service eb:type="Sabre">CDI Service</eb:Service>
+			<eb:Action>UpdateReservationRQ</eb:Action>
+			<eb:MessageData>
+				<eb:MessageId>mid:1</eb:MessageId>
+				<eb:Timestamp>2008-03-03T12:45:52</eb:Timestamp>
+			</eb:MessageData>
+		</eb:MessageHeader>
+		<wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+			<wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">${#Project#tokenString}</wsse:BinarySecurityToken>
+		</wsse:Security>
+	</SOAP-ENV:Header>
+	<SOAP-ENV:Body>
+	<pnrb:UpdateReservationRQ Version="1.19.0" xmlns:pnrb="http://webservices.sabre.com/pnrbuilder/v1_19" xmlns:or="http://services.sabre.com/res/or/v1_14">
+	<pnrb:RequestType initialIgnore="false" commitTransaction="true">Stateful</pnrb:RequestType>
+	<pnrb:ReturnOptions RetrievePNR="true"/>
+     </pnrb:UpdateReservationRQ>
+
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+]]></con:request><con:originalUri>http://hotvld215.sgdcelab.sabre.com/router</con:originalUri><con:assertion type="Simple Contains" id="e6604af6-eb5c-42b9-a724-d9904f67ac56" name="LineStatus=HK"><con:configuration><token>LineStatus>HK</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="2aea57d3-35b5-480a-8484-567ad92a429c" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="SessionClose" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="SessionClose" id="67f2657e-aee3-4b35-a05e-886eb40cafc4"><con:settings/><con:config service="https://webservices.havail.sabre.com" methodName="Router" resourcePath="/router" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="SessionClose" id="345cdfdc-9de8-4469-8094-1fc316efebed" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#Project#usgEndPoint}</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader">
+  <SOAP-ENV:Header>
+    <eb:MessageHeader SOAP-ENV:mustUnderstand="1" eb:version="1.0">
+      <eb:ConversationId>nghp@sabre.com</eb:ConversationId>
+      <eb:From>
+        <eb:PartyId type="urn:x12.org:IO5:01">sabre.com</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId type="urn:x12.org:IO5:01">webservices.sabre.com</eb:PartyId>
+      </eb:To>
+      <eb:CPAId>TM61</eb:CPAId>
+      <eb:Service eb:type="string">Session</eb:Service>
+      <eb:Action>SessionCloseRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>1ydnDVx1CmpobTJaFPuOOT</eb:MessageId>
+        <eb:Timestamp>2004-05-12T13:23:00Z</eb:Timestamp>
+        <eb:TimeToLive>2004-05-12T13:23:00Z</eb:TimeToLive>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/12/utility">
+      <wsse:BinarySecurityToken>${#project#tokenString}</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body/>
+</SOAP-ENV:Envelope>]]></con:request><con:originalUri>http://hotvld214.sgdcelab.sabre.com/router</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>NimbusTags</con:name><con:value>@v2.1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties><con:property><con:name>usgEndPoint</con:name><con:value>https://webservices.havail.sabre.com/websvc</con:value></con:property><con:property><con:name>userName</con:name><con:value/></con:property><con:property><con:name>passWord</con:name><con:value/></con:property><con:property><con:name>pcc</con:name><con:value/></con:property><con:property><con:name>Prod-Endpoint</con:name><con:value>https://webservices.havail.sabre.com/websvc</con:value></con:property><con:property><con:name>Cert-Endpoint</con:name><con:value>https://sws-crt.cert.havail.sabre.com/websvc</con:value></con:property><con:property><con:name>INT-Endpoint</con:name><con:value>http://sws-sts.internal.cert.sabre.com/websvc</con:value></con:property><con:property><con:name>tokenBase64</con:name><con:value>U2hhcmVkL0lETDpJY2VTZXNzXC9TZXNzTWdyOjFcLjAuSURML0NvbW1vbi8hSUNFU01TXC9SRVNCIUlDRVNNU0xCXC9SRVMuTEIhLTI5ODgzMzMwMjU1ODI3Mzc3OTIhMTE4NjU2MSEw</con:value></con:property><con:property><con:name>tokenString</con:name><con:value>Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESB!ICESMSLB\/RES.LB!-2988333025582737792!1186561!0</con:value></con:property><con:property><con:name>BookingKey</con:name><con:value>e987de15-c177-4868-9d85-18910716c835</con:value></con:property></con:properties><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
