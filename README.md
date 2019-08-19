@@ -8,7 +8,7 @@ Sabre has released Content Services for Lodging, a new set of lodging APIs, on S
 <li>Modern APIs: Offering a modern set of SOAP/XML and REST/JSON APIs; leveraging improved data structures and supported by robust documentation
  </ul>
 
-The API workflow can be found <a href="https://beta.developer.sabre.com/guides/travel-agency/content-services-for-lodging">here</a>
+The API workflow and details of each API can be found <a href="https://beta.developer.sabre.com/guides/travel-agency/content-services-for-lodging">here</a>
 
 Details on aggregator content can be found <a href="https://beta.developer.sabre.com/guides/travel-agency/content-services-for-lodging-aggregators">here</a>
 
