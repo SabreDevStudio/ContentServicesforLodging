@@ -2,10 +2,11 @@
 
 Sabre has released Content Services for Lodging, a new set of lodging APIs, on Sabre Dev Studio. Enhance your booking tool with the value that Content Services for Lodging delivers, including:
 
-More Content: Integrating over a million lodging property and rate options from GDS and aggregator sources such as Booking.com, Bedsonline, and Expedia Partner Solutions through modern, more flexible APIs, allowing you to compare rates from different sources side-by-side
-New Search and Preferencing Capabilities: Delivering enhanced capabilities such as polygon searching and agency preferencing, enabling new shopping experiences and more efficient workflows
-Product Normalization: Supporting attribute-based rate comparison across content sources allowing your agents and travelers to easily and efficiently find the best rate that meets their needs 
-Modern APIs: Offering a modern set of SOAP/XML and REST/JSON APIs; leveraging improved data structures and supported by robust documentation
+<ul><li>More Content: Integrating over a million lodging property and rate options from GDS and aggregator sources such as Booking.com, Bedsonline, and Expedia Partner Solutions through modern, more flexible APIs, allowing you to compare rates from different sources side-by-side
+<li>New Search and Preferencing Capabilities: Delivering enhanced capabilities such as polygon searching and agency preferencing, enabling new shopping experiences and more efficient workflows
+<li>Product Normalization: Supporting attribute-based rate comparison across content sources allowing your agents and travelers to easily and efficiently find the best rate that meets their needs 
+<li>Modern APIs: Offering a modern set of SOAP/XML and REST/JSON APIs; leveraging improved data structures and supported by robust documentation
+ </ul>
 
 The API workflow can be found <a href="https://beta.developer.sabre.com/guides/travel-agency/content-services-for-lodging">here</a>
 
